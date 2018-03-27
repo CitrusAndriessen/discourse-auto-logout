@@ -7,6 +7,13 @@ export default {
 		let apiUser;
 		function setLogoutTimer(eventType) {
 			clearTimeout(timer);
+
+			let delaySeconds = 10 * 60;
+			if(window.logoutDelay !== undefined) {
+				delaySeconds = parseInt(window.logoutDelay,10);
+				console.log('log out after', delaySeconds, 'seconds');
+			}
+
 			timer = setTimeout( ()=> {
 				function logoutLink() { return $('a.logout'); }
 				function tryLogout() {
@@ -21,7 +28,7 @@ export default {
 					$('#current-user a').click();
 				}
 				tryLogout();
-			}, 10 * 60 * 1000);
+			}, delaySeconds * 1000);
 		}
 
 
