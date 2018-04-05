@@ -5,32 +5,32 @@ export default {
 	initialize() {
 		let timer = 0;
 		let apiUser;
+
+		let requestOut = false;
+		let requestValid = false;
 		function setLogoutTimer(eventType) {
-			clearTimeout(timer);
+			if(requestOut) { return; }
+			if(requestValid) { return; }
 
-			let delaySeconds = 10 * 60;
-			if(window.logoutDelay !== undefined) {
-				delaySeconds = parseInt(window.logoutDelay,10);
-				console.log('log out after', delaySeconds, 'seconds');
+			requestOut = true;
+
+			const loc = window.location;
+			const url = loc.protocol + '//api.' + loc.hostname + '/out/' + apiUser.id 
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function() {
+				if(this.readyState == 4) {
+					requestOut = false;
+					requestValid = true;
+
+					clearTimeout( timer );
+					timer = setTimeout( ()=> {
+						requestValid = false;
+					}, 5 * 1000);
+				}
 			}
-
-			timer = setTimeout( ()=> {
-				function logoutLink() { return $('a.logout'); }
-				function tryLogout() {
-					let link = logoutLink();
-					if(link.length) {
-						link.click();
-					} else {
-						setTimeout(() => { tryLogout(); },0);
-					}
-				}
-				if(!logoutLink().length) {
-					$('#current-user a').click();
-				}
-				tryLogout();
-			}, delaySeconds * 1000);
+			xhttp.open('GET', url, true);
+			xhttp.send();
 		}
-
 
 		withPluginApi('0.3', api => {       
 			apiUser = api.getCurrentUser();
