@@ -13,6 +13,7 @@ export default {
 		function setLogoutTimer(eventType) {
 			if(requestOut) { return; }
 			if(requestValid) { return; }
+            if(apiUser === null) { return; }
 
 			requestOut = true;
             clearTimeout(warningID);
