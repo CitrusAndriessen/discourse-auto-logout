@@ -31,7 +31,7 @@ export default {
                     var warnSeconds = (obj.timeoutMinutes - 5) * 60;
                     if(warnSeconds > 0) {
                         warningID = setTimeout( function() {
-                                bootbox.alert('Er is al enige tijd geen inactiviteit. Wanneer je binnen 5 minuten geen activiteit vertoond wordt je automatisch uitgelogd.', function() {
+                                bootbox.alert('Er is al enige tijd geen activiteit. Wanneer je nog 5 minuten inactief blijft, word je automatisch uitgelogd.', function() {
                                         });
                                 },warnSeconds*1000);
                     }
